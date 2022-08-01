@@ -1,0 +1,55 @@
+#!/bin/sh
+#
+
+# PROVIDE: rtc
+# REQUIRE: FILESYSTEMS
+# BEFORE: netif
+# KEYWORD: nojail shutdown
+
+. /etc/rc.subr
+
+name="fakertc"
+desc="Restore RTC date and time"
+rcvar="fakertc_enable"
+start_cmd="fakertc_start"
+stop_cmd="fakertc_stop"
+
+extra_commands="savertc"
+savertc_cmd="${name}_stop"
+
+# Set some defaults
+fakertc_enable=${fakertc_enable:-"NO"}
+fakertc_file=${fakertc_file:-"/var/db/fakertc"} # File to store RTC on shutdown
+
+_fakertc_format="+%Y%m%d%H%M.%S"
+
+fakertc_start()
+{
+
+	echo -n "Set RTC from: ${fakertc_file}: "
+
+	if [ ! -r ${fakertc_file} ] ; then
+		warn "${fakertc_file} is not readable"
+		return 1
+	fi
+
+	date -u $( cat "${fakertc_file}" )
+
+	echo '.'
+}
+
+fakertc_stop()
+{
+
+	echo -n "Writing RTC file: ${fakertc_file}"
+
+	oumask=`umask`
+	umask 077
+	date -u "${_fakertc_format}" > "${fakertc_file}" || warn 'write failed (read-only fs?)'
+	umask ${oumask}
+
+	echo '.'
+}
+
+load_rc_config $name
+run_rc_command "$1"
