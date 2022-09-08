@@ -26,19 +26,25 @@ _fakertc_format="+%Y%m%d%H%M.%S"
 fakertc_start()
 {
 
-	echo -n "Set RTC from: ${fakertc_file}: "
+	if [ ! -s ${fakertc_file} ] ; then
+		fakertc_save
+		return 0
+	fi
+
+	echo -n "Set RTC from ${fakertc_file}: "
 
 	if [ ! -r ${fakertc_file} ] ; then
 		warn "${fakertc_file} is not readable"
 		return 1
 	fi
 
-	date -u $( cat "${fakertc_file}" )
+	_fakertc_date=$( date -u $( cat "${fakertc_file}" ) )
+	echo -n "${_fakertc_date}"
 
 	echo '.'
 }
 
-fakertc_stop()
+fakertc_save()
 {
 
 	echo -n "Writing RTC file: ${fakertc_file}"
@@ -49,6 +55,12 @@ fakertc_stop()
 	umask ${oumask}
 
 	echo '.'
+}
+
+fakertc_stop()
+{
+
+	fakertc_save
 }
 
 load_rc_config $name
