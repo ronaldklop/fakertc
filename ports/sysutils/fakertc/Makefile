@@ -13,12 +13,11 @@ USE_GITHUB=	yes
 GH_ACCOUNT=	ronaldklop
 
 NO_ARCH=	yes
-
+NO_BUILD=	yes
 PLIST_FILES=	etc/rc.d/${PORTNAME}
 
-NO_BUILD=	yes
-
 do-install:
-		${INSTALL_SCRIPT} ${WRKSRC}/src/etc/rc.d/${PORTNAME} ${STAGEDIR}${PREFIX}/etc/rc.d
+		${INSTALL_SCRIPT} ${WRKSRC}/src/etc/rc.d/${PORTNAME} \
+			${STAGEDIR}${PREFIX}/etc/rc.d
 
 .include <bsd.port.mk>

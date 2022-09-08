@@ -1,16 +1,11 @@
 Save real-time clock on reboot
 
-Computers without a real-time clock will have the clock way off on 
-boot. NTP can be used to correct the clock. But when network setup
-depends on valid certificates for DNSsec or IPsec the time is not
-allowed to be off too much.
-This utility can help by saving the date and time on shutdown and
-restoring it on startup. The clock is only off as long as the system
-took to reboot.
-This also helps to logs to not go backwards in time.
+For computers without a real-time clock, this utility enables to store
+the wall-clock on shutdown and restore it on boot, in order to minimize
+the drift as far as possible until e.g. NTP is used to set the correct
+date/time again.
 
-NB: If you are running UFS-on-root the system already gets the time
-from the UFS superblock. ZFS does not have this feature.
-NB2: The idea of this utility came from https://lists.freebsd.org/archives/freebsd-arm/2022-July/001522.html
+Note that systems using UFS for the root fs won't need this, as the
+clock is already restored from info in the UFS superblock.
 
 WWW: https://github.com/ronaldklop/fakertc
