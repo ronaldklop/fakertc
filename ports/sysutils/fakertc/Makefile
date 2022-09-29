@@ -1,6 +1,6 @@
 PORTNAME=	fakertc
 DISTVERSIONPREFIX=	v
-DISTVERSION=	2
+DISTVERSION=	3
 CATEGORIES=	sysutils
 
 MAINTAINER=	ronald-lists@klop.ws
@@ -15,9 +15,12 @@ GH_ACCOUNT=	ronaldklop
 
 NO_ARCH=	yes
 NO_BUILD=	yes
-PLIST_FILES=	etc/rc.d/${PORTNAME}
+PLIST_FILES=	etc/cron.d/${PORTNAME} etc/rc.d/${PORTNAME}
 
 do-install:
+		${MKDIR} ${WRKSRC}/src/etc/cron.d
+		${INSTALL_DATA} ${WRKSRC}/src/etc/cron.d/${PORTNAME} \
+			${STAGEDIR}${PREFIX}/etc/cron.d
 		${INSTALL_SCRIPT} ${WRKSRC}/src/etc/rc.d/${PORTNAME} \
 			${STAGEDIR}${PREFIX}/etc/rc.d
 
