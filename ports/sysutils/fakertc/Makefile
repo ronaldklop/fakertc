@@ -18,10 +18,10 @@ NO_BUILD=	yes
 PLIST_FILES=	etc/cron.d/${PORTNAME} etc/rc.d/${PORTNAME}
 
 do-install:
-		${MKDIR} ${WRKSRC}/src/etc/cron.d
+		${MKDIR} ${STAGEDIR}${PREFIX}/etc/cron.d
 		${INSTALL_DATA} ${WRKSRC}/src/etc/cron.d/${PORTNAME} \
-			${STAGEDIR}${PREFIX}/etc/cron.d
+			${STAGEDIR}${PREFIX}/etc/cron.d/
 		${INSTALL_SCRIPT} ${WRKSRC}/src/etc/rc.d/${PORTNAME} \
-			${STAGEDIR}${PREFIX}/etc/rc.d
+			${STAGEDIR}${PREFIX}/etc/rc.d/
 
 .include <bsd.port.mk>
